@@ -39,24 +39,30 @@ async function universalEngine(url, options) {
 // THE API ROUTE
 app.post('/api/scrape', async (req, res) => {
     const { url, keyword, contentType } = req.body;
+    console.log(`📩 Request received! URL: ${url}, Keyword: ${keyword}`); // NEW LINE
 
     if (!url) return res.status(400).json({ error: "URL is required" });
 
     try {
+        console.log("🚀 Launching Browser..."); // NEW LINE
         const data = await universalEngine(url, { keyword, contentType });
+        console.log("✅ Scrape Successful! Sending data back..."); // NEW LINE
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: "Scraping failed" });
+        console.error("❌ API Route Error:", error); // NEW LINE
+        res.status(500).json({ error: "Scraping failed", details: error.message });
     }
 });
 
-const PORT = 5000;
+const PORT = 8080;
 app.listen(PORT, () => {
     console.log(`--- SERVER STARTED ---`);
     console.log(`Listening on: http://localhost:${PORT}`);
     console.log(`To stop the server: Press CTRL + C`);
     console.log(`-----------------------`);
 });
+
+setInterval(() => {}, 1000);
 
 process.on('uncaughtException', (err) => {
     console.error('🔥 CRASH DETECTED:', err);
