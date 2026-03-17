@@ -1,7 +1,9 @@
 import express from 'express';
 import puppeteer from 'puppeteer';
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 app.use(express.json()); // Allows the server to read JSON from the frontend
 
 async function universalEngine(url, options) {
